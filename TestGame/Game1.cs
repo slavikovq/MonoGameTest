@@ -62,11 +62,12 @@ public class Game1 : Game
             playerPosition.X += moveSpeed * deltaTime;
         }
         
-        if (keyboard.IsKeyDown(Keys.W) && isOnGround)
+        if ((keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Space)) && isOnGround)
         {
-            playerVelocity.Y = -250f; 
+            playerVelocity.Y = -250f;
             isOnGround = false;
         }
+
         
         playerVelocity.Y += gravity * deltaTime;
         playerPosition += playerVelocity * deltaTime;
