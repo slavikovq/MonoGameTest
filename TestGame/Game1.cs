@@ -55,6 +55,12 @@ public class Game1 : Game
 
         int windowHeight = GraphicsDevice.Viewport.Height;
         
+        if (playerPosition.Y + sourceRect.Height >= windowHeight)
+        {
+            playerPosition.Y = windowHeight - sourceRect.Height;
+            playerVelocity.Y = 0;
+        }
+
 
         
         // TODO: Add your update logic here
