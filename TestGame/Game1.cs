@@ -18,6 +18,7 @@ public class Game1 : Game
     
     float gravity = 500f; 
     float groundY = 400f;
+    float moveSpeed = 100f;
 
     public Game1()
     {
@@ -48,12 +49,34 @@ public class Game1 : Game
             Exit();
         
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+        KeyboardState keyboard = Keyboard.GetState();
+        
+        if (keyboard.IsKeyDown(Keys.A))
+        {
+            playerPosition.X -= moveSpeed * deltaTime;
+        }
+        if (keyboard.IsKeyDown(Keys.D))
+        {
+            playerPosition.X += moveSpeed * deltaTime;
+        }
+        
         playerVelocity.Y += gravity * deltaTime;
-
         playerPosition += playerVelocity * deltaTime;
-
+        
+        int windowWidth = GraphicsDevice.Viewport.Width;
         int windowHeight = GraphicsDevice.Viewport.Height;
+        
+        if (playerPosition.Y + sourceRect.Height >= windowHeight)
+        {
+            playerPosition.Y = windowHeight - sourceRect.Height;
+            playerVelocity.Y = 0;
+        }
+        
+        if (playerPosition.X < 0)
+            playerPosition.X = 0;
+
+        if (playerPosition.X + sourceRect.Width > windowWidth)
+            playerPosition.X = windowWidth - sourceRect.Width;
         
         if (playerPosition.Y + sourceRect.Height >= windowHeight)
         {
