@@ -12,7 +12,12 @@ public class Game1 : Game
     Texture2D spriteSheet;
     Rectangle sourceRect;
     
+    
     Vector2 playerPosition = new Vector2(0, 0);
+    Vector2 playerVelocity = Vector2.Zero;
+    
+    float gravity = 500f; 
+    float groundY = 400f;
 
     public Game1()
     {
@@ -41,6 +46,16 @@ public class Game1 : Game
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
+        
+        float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        playerVelocity.Y += gravity * deltaTime;
+
+        playerPosition += playerVelocity * deltaTime;
+
+        int windowHeight = GraphicsDevice.Viewport.Height;
+        
+
         
         // TODO: Add your update logic here
 
