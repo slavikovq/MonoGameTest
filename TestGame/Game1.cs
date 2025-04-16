@@ -20,6 +20,8 @@ public class Game1 : Game
     float groundY = 400f;
     float moveSpeed = 100f;
 
+    bool isOnGround = false;
+    
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -60,6 +62,12 @@ public class Game1 : Game
             playerPosition.X += moveSpeed * deltaTime;
         }
         
+        if (keyboard.IsKeyDown(Keys.W) && isOnGround)
+        {
+            playerVelocity.Y = -250f; 
+            isOnGround = false;
+        }
+        
         playerVelocity.Y += gravity * deltaTime;
         playerPosition += playerVelocity * deltaTime;
         
@@ -70,6 +78,7 @@ public class Game1 : Game
         {
             playerPosition.Y = windowHeight - sourceRect.Height;
             playerVelocity.Y = 0;
+            isOnGround = true;
         }
         
         if (playerPosition.X < 0)
