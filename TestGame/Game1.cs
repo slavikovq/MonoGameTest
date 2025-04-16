@@ -17,11 +17,15 @@ public class Game1 : Game
 
     float gravity = 500f;
     float moveSpeed = 100f;
-    bool isOnGround = false;
+    private bool isOnGround;
 
     int playerSize = 32;
 
     Rectangle[] platforms;
+    
+    private Matrix _viewMatrix;
+    private Vector2 _cameraPosition;
+    private float _cameraSpeed = 200f;
 
     public Game1()
     {
@@ -74,6 +78,38 @@ public class Game1 : Game
             
             new Rectangle(32*22, 300, 32, 32),
             new Rectangle(32*23, 300, 32, 32),
+            
+            new Rectangle(50, 170, 32, 32),
+            new Rectangle(0, 138, 32, 32),
+            new Rectangle(82, 170, 32, 32),
+            
+            new Rectangle(114, 170, 32, 32),    
+            new Rectangle(82, 90, 32, 32),
+            new Rectangle(114, 90, 32, 32),
+            
+            new Rectangle(200, 190, 32, 32),
+            
+            new Rectangle(230, 100, 32, 32),
+            
+            
+            new Rectangle(300, 210, 32, 32),
+            new Rectangle(400, 230, 32, 32),
+            new Rectangle(500, 250, 32, 32),
+            new Rectangle(600, 270, 32, 32),
+            
+            new Rectangle(300, 100, 32, 32),
+            new Rectangle(400, 100, 32, 32),
+            new Rectangle(500, 100, 32, 32),
+            new Rectangle(600, 100, 32, 32),
+            new Rectangle(632, 100, 32, 32),
+            new Rectangle(664, 100, 32, 32),
+            new Rectangle(696, 100, 32, 32),
+            new Rectangle(728, 100, 32, 32),
+            
+            new Rectangle(32*22, 300, 32, 32),
+            new Rectangle(32*23, 300, 32, 32),
+            
+            
         ];
     }
 
@@ -169,24 +205,36 @@ public class Game1 : Game
             playerVelocity.Y = 0;
             isOnGround = true;
         }
+        
+        UpdateCamera();
 
         base.Update(gameTime);
+    }
+
+    private void UpdateCamera()
+    {
+
+        _cameraPosition.Y = playerPosition.Y - GraphicsDevice.Viewport.Height / 2;
+  
+        int worldHeight = 5000; 
+        _cameraPosition.Y = MathHelper.Clamp(_cameraPosition.Y, 0, worldHeight - GraphicsDevice.Viewport.Height);
+        
+        _viewMatrix = Matrix.CreateTranslation(new Vector3(0, -_cameraPosition.Y, 0));
     }
 
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-        _spriteBatch.Begin();
-
+        _spriteBatch.Begin(transformMatrix: _viewMatrix);
+        
         _spriteBatch.Draw(
             spriteSheet,
             new Rectangle((int)playerPosition.X, (int)playerPosition.Y, playerSize, playerSize),
             sourceRect,
             Color.White
         );
-
+        
         Rectangle platformMiddleTop = new Rectangle(8, 8, 8, 8);
-
         foreach (var platform in platforms)
         {
             _spriteBatch.Draw(spriteSheet, platform, platformMiddleTop, Color.White);
