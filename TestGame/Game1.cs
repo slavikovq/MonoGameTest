@@ -38,13 +38,42 @@ public class Game1 : Game
 
         platforms =
         [
-            new Rectangle(250, 450, 32, 32),
-            new Rectangle(350, 430, 32, 32),
-            new Rectangle(450, 450, 32, 32),
-
-            new Rectangle(250, 200, 32, 32),
-            new Rectangle(350, 200, 32, 32),
-            new Rectangle(450, 200, 32, 32)
+            new Rectangle(0, 450, 32, 32),
+            new Rectangle(32, 450, 32, 32),
+            new Rectangle(32*2, 450, 32, 32),
+            new Rectangle(32*3, 450, 32, 32),
+            new Rectangle(32*4, 450, 32, 32),
+            new Rectangle(32*5, 450, 32, 32),
+            new Rectangle(32*6, 450, 32, 32),
+            new Rectangle(32*7, 450, 32, 32),
+            new Rectangle(32*8, 450, 32, 32),
+            new Rectangle(32*9, 450, 32, 32),
+            new Rectangle(32*10, 450, 32, 32),
+            new Rectangle(32*11, 450, 32, 32),
+            new Rectangle(32*12, 450, 32, 32),
+            new Rectangle(32*13, 450, 32, 32),
+            new Rectangle(32*14, 450, 32, 32),
+            new Rectangle(32*15, 450, 32, 32),
+            new Rectangle(32*16, 450, 32, 32),
+            new Rectangle(32*17, 450, 32, 32),
+            new Rectangle(32*18, 450, 32, 32),
+            new Rectangle(32*19, 450, 32, 32),
+            new Rectangle(32*20, 450, 32, 32),
+            new Rectangle(32*21, 450, 32, 32),
+            new Rectangle(32*22, 450, 32, 32),
+            new Rectangle(32*23, 450, 32, 32),
+            new Rectangle(32*24, 450, 32, 32),
+            
+            new Rectangle(50, 400, 32, 32),
+            new Rectangle(82, 400, 32, 32),
+            new Rectangle(200, 360, 32, 32),
+            new Rectangle(300, 360, 32, 32),
+            new Rectangle(400, 360, 32, 32),
+            new Rectangle(500, 360, 32, 32),
+            new Rectangle(600, 360, 32, 32),
+            
+            new Rectangle(32*22, 300, 32, 32),
+            new Rectangle(32*23, 300, 32, 32),
         ];
     }
 
@@ -82,7 +111,48 @@ public class Game1 : Game
 
         isOnGround = false;
 
+        foreach (var platform in platforms)
+        {
+            if (playerRect.Intersects(platform))
+            {
+                Rectangle prevRect = new Rectangle(
+                    (int)previousPosition.X,
+                    (int)previousPosition.Y,
+                    playerSize,
+                    playerSize
+                );
+                
+                if (prevRect.Bottom <= platform.Top && playerRect.Bottom >= platform.Top)
+                {
+                    playerPosition.Y = platform.Top - playerSize;
+                    playerVelocity.Y = 0;
+                    isOnGround = true;
+                }
 
+                else if (prevRect.Top >= platform.Bottom && playerRect.Top <= platform.Bottom)
+                {
+                    playerPosition.Y = platform.Bottom;
+                    playerVelocity.Y = 0;
+                }
+
+                else if (prevRect.Right <= platform.Left && playerRect.Right >= platform.Left)
+                {
+                    playerPosition.X = platform.Left - playerSize;
+                }
+
+                else if (prevRect.Left >= platform.Right && playerRect.Left <= platform.Right)
+                {
+                    playerPosition.X = platform.Right;
+                }
+
+                playerRect = new Rectangle(
+                    (int)playerPosition.X,
+                    (int)playerPosition.Y,
+                    playerSize,
+                    playerSize
+                );
+            }
+        }
 
         int windowWidth = GraphicsDevice.Viewport.Width;
         int windowHeight = GraphicsDevice.Viewport.Height;
